@@ -6,4 +6,5 @@ public interface IShoppingListRepository
     Task<ShoppingList> GetAsync(Guid id);
     Task<bool> ExistsForUserByShoppingDateAsync(Guid userId, DateTimeOffset shoppingDate);
     Task UpdateAsync(ShoppingList shoppingList);
+    Task<IEnumerable<ShoppingList>> GetByUserIdAsync(Guid userId);
 }

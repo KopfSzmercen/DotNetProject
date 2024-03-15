@@ -40,4 +40,71 @@ internal sealed class ShoppingListService(
 
         await repository.UpdateAsync(shoppingList);
     }
+
+    public async Task RemoveProductAsync(Guid shoppingListId, Guid productId)
+    {
+        var shoppingList = await repository.GetAsync(shoppingListId);
+
+        if (shoppingList is null || shoppingList.UserId != context.Identity.Id)
+            throw new ShoppingListNotFoundException(shoppingListId);
+
+        shoppingList.RemoveProduct(productId);
+
+        await repository.UpdateAsync(shoppingList);
+    }
+
+    public async Task MarkProductAsBoughtAsync(Guid shoppingListId, Guid productId)
+    {
+        var shoppingList = await repository.GetAsync(shoppingListId);
+
+        if (shoppingList is null || shoppingList.UserId != context.Identity.Id)
+            throw new ShoppingListNotFoundException(shoppingListId);
+
+        shoppingList.MarkProductAsBought(productId);
+
+        await repository.UpdateAsync(shoppingList);
+    }
+
+    public async Task FinishShoppingListAsync(Guid shoppingListId)
+    {
+        var shoppingList = await repository.GetAsync(shoppingListId);
+
+        if (shoppingList is null || shoppingList.UserId != context.Identity.Id)
+            throw new ShoppingListNotFoundException(shoppingListId);
+
+        shoppingList.Finish(clock.DateTimeOffsetNow());
+
+        await repository.UpdateAsync(shoppingList);
+    }
+
+    public async Task<IEnumerable<ShoppingListDto>> GetAllAsync()
+    {
+        var shoppingLists = await repository.GetByUserIdAsync(context.Identity.Id);
+
+        return shoppingLists.Select(x => new ShoppingListDto(
+            x.Id,
+            x.CreatedAt,
+            x.Name,
+            x.ShoppingDate,
+            x.FinishedAt,
+            x.Products.Select(p => new ProductDto(
+                p.Id,
+                p.Name,
+                p.Quantity,
+                p.Status,
+                p.Price.Currency,
+                p.Price.Amount))));
+    }
+
+    public async Task MarkProductAsNotBoughtAsync(Guid shoppingListId, Guid productId)
+    {
+        var shoppingList = await repository.GetAsync(shoppingListId);
+
+        if (shoppingList is null || shoppingList.UserId != context.Identity.Id)
+            throw new ShoppingListNotFoundException(shoppingListId);
+
+        shoppingList.MarkProductAsNotBought(productId);
+
+        await repository.UpdateAsync(shoppingList);
+    }
 }

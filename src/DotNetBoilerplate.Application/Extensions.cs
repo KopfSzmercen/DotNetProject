@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using DotNetBoilerplate.Application.Services;
 using DotNetBoilerplate.Shared.Commands;
 using DotNetBoilerplate.Shared.Events;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,9 @@ public static class Extensions
         services.AddCommands();
         services.AddDomainEventHandlers();
         services.AddDomainNotificationHandlers();
+
+        services.AddScoped<IShoppingListService, ShoppingListService>();
+
         return services;
     }
 }

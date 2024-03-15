@@ -4,30 +4,33 @@ namespace DotNetBoilerplate.Core.Entities.ShoppingLists;
 
 public class ShoppingList
 {
+    private const int MaxNumberOfProducts = 20;
+    private List<Product> _products = [];
+
+    private ShoppingList()
+    {
+    }
+
     public Guid Id { get; private init; }
     public Guid UserId { get; private init; }
     public DateTimeOffset CreatedAt { get; private init; }
     public string Name { get; private set; }
     public DateTimeOffset ShoppingDate { get; private init; }
-    private List<Product> Products { get; set; }
-    
+    public IEnumerable<Product> Products => _products;
+
     public DateTimeOffset? FinishedAt { get; private set; }
 
-    private const int MaxNumberOfProducts = 20;
-
-    private ShoppingList() {}
-
     public static ShoppingList Create(
-        Guid userId, 
-        DateTimeOffset createdAt, 
-        string name, 
+        Guid userId,
+        DateTimeOffset createdAt,
+        string name,
         DateTimeOffset shoppingDate,
         bool userHasShoppingListWithSameShoppingDate
-        )
+    )
     {
         if (userHasShoppingListWithSameShoppingDate)
             throw new UserHasShoppingListWithSameShoppingDateException();
-        
+
         var shoppingList = new ShoppingList
         {
             Id = Guid.NewGuid(),
@@ -35,55 +38,56 @@ public class ShoppingList
             CreatedAt = createdAt,
             Name = name,
             ShoppingDate = shoppingDate,
-            Products = []
+            _products = []
         };
-        
+
         return shoppingList;
     }
-    
+
     public void AddProduct(Product product)
     {
-        if (Products.Count >= MaxNumberOfProducts)
+        if (_products.Count >= MaxNumberOfProducts)
             throw new MaxNumberOfProductsExceededException();
-        
-        Products.Add(product);
+
+        _products.Add(product);
     }
-    
-    public void RemoveProduct(Product product)
+
+    public void RemoveProduct(Guid productId)
     {
-        var productExists = Products.Any(p => p.Id == product.Id);
-        
-        if (!productExists)
+        var product = _products.FirstOrDefault(p => p.Id == productId);
+
+        if (product is null)
             throw new ProductNotFound();
-        
-        Products.Remove(product);
+
+        _products.Remove(product);
     }
-    
-    public void MarkProductAsBought(Product product)
+
+    public void MarkProductAsBought(Guid productId)
     {
-        var productExists = Products.Any(p => p.Id == product.Id);
-        
-        if (!productExists)
+        var product = _products.FirstOrDefault(p => p.Id == productId);
+
+        if (product is null)
             throw new ProductNotFound();
-        
+
         product.MarkAsBought();
     }
-    
-    public void MarkProductAsNotBought(Product product)
+
+    public void MarkProductAsNotBought(Guid productId)
     {
-        var productExists = Products.Any(p => p.Id == product.Id);
-        
-        if (!productExists)
+        var product = _products.FirstOrDefault(p => p.Id == productId);
+
+        if (product is null)
             throw new ProductNotFound();
-        
+
         product.MarkAsNotBought();
     }
+
     public void Finish(DateTimeOffset now)
     {
-        var allProductsAreBoughtOrNotBought = Products
+        var allProductsAreBoughtOrNotBought = _products
             .All(p => p.Status is ProductStatus.Bought or ProductStatus.NotBought);
-        
-        if (!allProductsAreBoughtOrNotBought) 
+
+        if (!allProductsAreBoughtOrNotBought)
             throw new AllProductsAreNotBoughtOrBoughtException();
 
         FinishedAt = now;

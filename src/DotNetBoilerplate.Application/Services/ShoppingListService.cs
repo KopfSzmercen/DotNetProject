@@ -50,17 +50,26 @@ internal sealed class ShoppingListService(
 
         shoppingList.RemoveProduct(productId);
 
+
         await repository.UpdateAsync(shoppingList);
     }
 
-    public async Task MarkProductAsBoughtAsync(Guid shoppingListId, Guid productId)
+    public async Task UpdateProductStatusAsync(Guid shoppingListId, Guid productId, ProductStatus status)
     {
         var shoppingList = await repository.GetAsync(shoppingListId);
 
         if (shoppingList is null || shoppingList.UserId != context.Identity.Id)
             throw new ShoppingListNotFoundException(shoppingListId);
 
-        shoppingList.MarkProductAsBought(productId);
+        switch (status)
+        {
+            case ProductStatus.Bought:
+                shoppingList.MarkProductAsBought(productId);
+                break;
+            case ProductStatus.NotBought:
+                shoppingList.MarkProductAsNotBought(productId);
+                break;
+        }
 
         await repository.UpdateAsync(shoppingList);
     }
@@ -93,18 +102,7 @@ internal sealed class ShoppingListService(
                 p.Quantity,
                 p.Status,
                 p.Price.Currency,
-                p.Price.Amount))));
-    }
-
-    public async Task MarkProductAsNotBoughtAsync(Guid shoppingListId, Guid productId)
-    {
-        var shoppingList = await repository.GetAsync(shoppingListId);
-
-        if (shoppingList is null || shoppingList.UserId != context.Identity.Id)
-            throw new ShoppingListNotFoundException(shoppingListId);
-
-        shoppingList.MarkProductAsNotBought(productId);
-
-        await repository.UpdateAsync(shoppingList);
+                p.Price.Amount)))
+        );
     }
 }

@@ -10,9 +10,7 @@ internal static class Extensions
     {
         services.AddScoped<IUserRepository, PostgresUserRepository>();
         services.AddScoped<ITicketRepository, PostgresTicketRepository>();
-
-        services.AddSingleton<IShoppingListRepository, InMemoryShoppingListRepository>();
-
+        
         return services;
     }
 }

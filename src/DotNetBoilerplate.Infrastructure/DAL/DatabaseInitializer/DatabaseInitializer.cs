@@ -1,6 +1,5 @@
 ﻿using DotNetBoilerplate.Application.Security;
-using DotNetBoilerplate.Core.Entities.Users;
-using DotNetBoilerplate.Core.ValueObjects;
+using DotNetBoilerplate.Core.Users;
 using DotNetBoilerplate.Infrastructure.DAL.Contexts;
 using DotNetBoilerplate.Shared.Abstractions.Time;
 using Microsoft.EntityFrameworkCore;

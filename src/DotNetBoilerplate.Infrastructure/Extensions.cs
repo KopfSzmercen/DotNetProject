@@ -18,7 +18,9 @@ public static class Extensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpContextAccessor();
-        services.AddEndpointsApiExplorer()
+
+        services
+            .AddEndpointsApiExplorer()
             .AddSwaggerGen(ConfigureSwagger.ConfigureSwaggerOptions)
             .AddPostgres(configuration)
             .AddDomainEventsDispatching()

@@ -12,7 +12,7 @@ internal static class Extensions
             var processOutboxMessagesJobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
             q.AddJob<ProcessOutboxMessagesJob>(processOutboxMessagesJobKey)
                 .AddTrigger(t => t.ForJob(processOutboxMessagesJobKey)
-                    .WithSimpleSchedule(s => s.WithIntervalInSeconds(15).RepeatForever())
+                    .WithSimpleSchedule(s => s.WithIntervalInSeconds(30).RepeatForever())
                 );
         });
 

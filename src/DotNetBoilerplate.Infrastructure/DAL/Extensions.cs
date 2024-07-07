@@ -1,4 +1,4 @@
-﻿using DotNetBoilerplate.Core.Services;
+﻿using DotNetBoilerplate.Core.Users;
 using DotNetBoilerplate.Infrastructure.DAL.Contexts;
 using DotNetBoilerplate.Infrastructure.DAL.DatabaseInitializer;
 using DotNetBoilerplate.Infrastructure.DAL.Decorators;

@@ -6,6 +6,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
 
         <RootNamespace>DotNetBoilerplate.Api</RootNamespace>
+
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

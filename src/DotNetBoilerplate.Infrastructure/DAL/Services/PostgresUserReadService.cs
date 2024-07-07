@@ -1,6 +1,4 @@
-﻿using DotNetBoilerplate.Core.Entities.Users;
-using DotNetBoilerplate.Core.Services;
-using DotNetBoilerplate.Core.ValueObjects;
+﻿using DotNetBoilerplate.Core.Users;
 using DotNetBoilerplate.Infrastructure.DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
 

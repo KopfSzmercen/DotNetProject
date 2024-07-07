@@ -23,25 +23,6 @@ namespace DotNetBoilerplate.Infrastructure.DAL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("DotNetBoilerplate.Core.Entities.Tickets.Ticket", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Tickets", "dotNetBoilerplate");
-                });
-
             modelBuilder.Entity("DotNetBoilerplate.Core.Entities.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -104,15 +85,6 @@ namespace DotNetBoilerplate.Infrastructure.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OutboxMessages", "dotNetBoilerplate");
-                });
-
-            modelBuilder.Entity("DotNetBoilerplate.Core.Entities.Tickets.Ticket", b =>
-                {
-                    b.HasOne("DotNetBoilerplate.Core.Entities.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

@@ -35,5 +35,8 @@ internal sealed class ConfigureSwagger
             Type = SecuritySchemeType.ApiKey,
             Scheme = "Bearer"
         });
+
+        swagger.CustomSchemaIds(type => type.FullName?.Replace('+', '.'));
+        swagger.SupportNonNullableReferenceTypes();
     }
 }

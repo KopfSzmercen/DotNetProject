@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using DotNetBoilerplate.Application.Security;
-using DotNetBoilerplate.Core.ValueObjects;
+using DotNetBoilerplate.Core.Users;
 using DotNetBoilerplate.Shared.AuthorizationPolicies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;

@@ -1,5 +1,5 @@
 ﻿using DotNetBoilerplate.Application.DTO;
-using DotNetBoilerplate.Application.Queries.Users;
+using DotNetBoilerplate.Application.Users;
 using DotNetBoilerplate.Infrastructure.DAL.Configurations.Read.Model;
 using DotNetBoilerplate.Infrastructure.DAL.Contexts;
 using DotNetBoilerplate.Shared.Abstractions.Queries;

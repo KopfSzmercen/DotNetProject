@@ -1,4 +1,4 @@
-﻿using DotNetBoilerplate.Core.ValueObjects;
+﻿using DotNetBoilerplate.Core.Users;
 using DotNetBoilerplate.Shared.Abstractions.Exceptions;
 
 namespace DotNetBoilerplate.Application.Exceptions;

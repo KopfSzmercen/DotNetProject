@@ -1,5 +1,4 @@
-﻿using DotNetBoilerplate.Core.Entities.Users;
-using DotNetBoilerplate.Core.ValueObjects;
+﻿using DotNetBoilerplate.Core.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

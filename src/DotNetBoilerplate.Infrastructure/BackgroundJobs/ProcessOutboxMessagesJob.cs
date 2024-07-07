@@ -11,18 +11,12 @@ using Quartz;
 namespace DotNetBoilerplate.Infrastructure.BackgroundJobs;
 
 [DisallowConcurrentExecution]
-internal sealed class ProcessOutboxMessagesJob : IJob
+internal sealed class ProcessOutboxMessagesJob(
+    DotNetBoilerplateWriteDbContext dbContext,
+    IServiceProvider serviceProvider)
+    : IJob
 {
-    private readonly DotNetBoilerplateWriteDbContext _dbContext;
-    private readonly DbSet<OutboxMessage> _outboxMessages;
-    private readonly IServiceProvider _serviceProvider;
-
-    public ProcessOutboxMessagesJob(DotNetBoilerplateWriteDbContext dbContext, IServiceProvider serviceProvider)
-    {
-        _outboxMessages = dbContext.OutboxMessages;
-        _dbContext = dbContext;
-        _serviceProvider = serviceProvider;
-    }
+    private readonly DbSet<OutboxMessage> _outboxMessages = dbContext.OutboxMessages;
 
     [SuppressMessage("ReSharper.DPA", "DPA0006: Large number of DB commands", MessageId = "count: 75")]
     public async Task Execute(IJobExecutionContext context)
@@ -32,9 +26,8 @@ internal sealed class ProcessOutboxMessagesJob : IJob
             .OrderBy(x => x.OccurredOn)
             .Take(10)
             .ToListAsync();
-
-
-        using var scope = _serviceProvider.CreateScope();
+        
+        using var scope = serviceProvider.CreateScope();
         foreach (var outboxMessage in messages)
         {
             var domainNotification = JsonConvert
@@ -53,13 +46,13 @@ internal sealed class ProcessOutboxMessagesJob : IJob
             var tasks = handlers.Select(x =>
                 (Task)handlerType
                     .GetMethod(nameof(IDomainNotificationHandler<IDomainEvent>.HandleAsync))
-                    ?.Invoke(x, new object[] { domainNotification.DomainEvent }));
+                    ?.Invoke(x, [domainNotification.DomainEvent]));
 
             await Task.WhenAll(tasks);
 
             outboxMessage.ProcessedDate = DateTimeOffset.Now;
         }
 
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 }

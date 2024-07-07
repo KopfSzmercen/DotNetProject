@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using DotNetBoilerplate.Api.Users;
 using DotNetBoilerplate.Application;
 using DotNetBoilerplate.Core;
 using DotNetBoilerplate.Infrastructure;
@@ -11,14 +12,13 @@ builder.Services
     .AddApplication()
     .AddCore()
     .AddInfrastructure(builder.Configuration)
-    .AddControllers().AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
+    .AddControllers()
+    .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 
 var app = builder.Build();
 
+app.MapUsersEndpoints();
+
 app.UseInfrastructure();
 
-
-app.Run();
+await app.RunAsync();

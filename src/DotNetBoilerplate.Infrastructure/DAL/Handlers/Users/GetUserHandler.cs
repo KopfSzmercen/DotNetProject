@@ -1,5 +1,5 @@
-﻿using DotNetBoilerplate.Application.DTO;
-using DotNetBoilerplate.Application.Users;
+﻿using DotNetBoilerplate.Application.Users;
+using DotNetBoilerplate.Application.Users.Responses;
 using DotNetBoilerplate.Infrastructure.DAL.Contexts;
 using DotNetBoilerplate.Shared.Abstractions.Contexts;
 using DotNetBoilerplate.Shared.Abstractions.Queries;
@@ -11,9 +11,9 @@ internal sealed class GetUserHandler(
     DotNetBoilerplateReadDbContext dbContext,
     IContext context
 )
-    : IQueryHandler<GetUserQuery, UserDetailsDto?>
+    : IQueryHandler<GetUserQuery, UserDetailsResponse?>
 {
-    public async Task<UserDetailsDto> HandleAsync(GetUserQuery query)
+    public async Task<UserDetailsResponse> HandleAsync(GetUserQuery query)
     {
         var user = await dbContext.Users
             .AsNoTracking()
@@ -21,7 +21,7 @@ internal sealed class GetUserHandler(
 
         return user is null
             ? null
-            : new UserDetailsDto
+            : new UserDetailsResponse
             {
                 Id = user.Id,
                 Username = user.Username,

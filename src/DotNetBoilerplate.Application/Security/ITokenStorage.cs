@@ -1,9 +1,9 @@
-﻿using DotNetBoilerplate.Application.DTO;
+﻿using DotNetBoilerplate.Application.Security.Responses;
 
 namespace DotNetBoilerplate.Application.Security;
 
 public interface ITokenStorage
 {
-    void Set(JwtDto jwt);
-    JwtDto Get();
+    void Set(JwtResponse jwt);
+    JwtResponse Get();
 }

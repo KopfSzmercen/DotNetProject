@@ -1,4 +1,5 @@
 ﻿using DotNetBoilerplate.Application.Users;
+using DotNetBoilerplate.Application.Users.Responses;
 using DotNetBoilerplate.Shared.Abstractions.Contexts;
 using DotNetBoilerplate.Shared.Abstractions.Queries;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -15,7 +16,7 @@ internal sealed class GetMeEndpoint : IEndpoint
             .WithSummary("Get Me");
     }
 
-    private static async Task<Results<Ok<Response>, NotFound>> Handle(
+    private static async Task<Results<Ok<UserDetailsResponse>, NotFound>> Handle(
         [FromServices] IQueryDispatcher queryDispatcher,
         [FromServices] IContext context,
         CancellationToken ct
@@ -26,22 +27,6 @@ internal sealed class GetMeEndpoint : IEndpoint
 
         if (result is null) return TypedResults.NotFound();
 
-        var response = new Response
-        {
-            Id = result.Id,
-            Username = result.Username,
-            Email = result.Email,
-            Role = result.Role
-        };
-
-        return TypedResults.Ok(response)!;
-    }
-
-    public sealed record Response
-    {
-        public Guid Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
+        return TypedResults.Ok(result)!;
     }
 }

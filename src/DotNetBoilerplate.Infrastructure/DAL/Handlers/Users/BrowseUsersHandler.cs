@@ -1,5 +1,5 @@
-﻿using DotNetBoilerplate.Application.DTO;
-using DotNetBoilerplate.Application.Users;
+﻿using DotNetBoilerplate.Application.Users;
+using DotNetBoilerplate.Application.Users.Responses;
 using DotNetBoilerplate.Infrastructure.DAL.Configurations.Read.Model;
 using DotNetBoilerplate.Infrastructure.DAL.Contexts;
 using DotNetBoilerplate.Shared.Abstractions.Queries;
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNetBoilerplate.Infrastructure.DAL.Handlers.Users;
 
-internal sealed class BrowseUsersHandler : IQueryHandler<BrowseUsers, Paged<UserDetailsDto>>
+internal sealed class BrowseUsersHandler : IQueryHandler<BrowseUsers, Paged<UserDetailsResponse>>
 {
     private readonly DbSet<UserReadModel> _users;
 
@@ -16,7 +16,7 @@ internal sealed class BrowseUsersHandler : IQueryHandler<BrowseUsers, Paged<User
         _users = dbContext.Users;
     }
 
-    public async Task<Paged<UserDetailsDto>> HandleAsync(BrowseUsers query)
+    public async Task<Paged<UserDetailsResponse>> HandleAsync(BrowseUsers query)
     {
         var users = _users
             .AsNoTracking();

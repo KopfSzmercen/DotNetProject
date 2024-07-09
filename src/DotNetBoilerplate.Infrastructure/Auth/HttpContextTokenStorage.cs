@@ -1,5 +1,5 @@
-﻿using DotNetBoilerplate.Application.DTO;
-using DotNetBoilerplate.Application.Security;
+﻿using DotNetBoilerplate.Application.Security;
+using DotNetBoilerplate.Application.Security.Responses;
 using Microsoft.AspNetCore.Http;
 
 namespace DotNetBoilerplate.Infrastructure.Auth;
@@ -14,16 +14,16 @@ internal sealed class HttpContextTokenStorage : ITokenStorage
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public void Set(JwtDto jwt)
+    public void Set(JwtResponse jwt)
     {
         _httpContextAccessor.HttpContext?.Items.TryAdd(TokenKey, jwt);
     }
 
-    public JwtDto Get()
+    public JwtResponse Get()
     {
         if (_httpContextAccessor is null) return null;
         if (_httpContextAccessor.HttpContext != null &&
-            _httpContextAccessor.HttpContext.Items.TryGetValue(TokenKey, out var jwt)) return jwt as JwtDto;
+            _httpContextAccessor.HttpContext.Items.TryGetValue(TokenKey, out var jwt)) return jwt as JwtResponse;
 
         return null;
     }

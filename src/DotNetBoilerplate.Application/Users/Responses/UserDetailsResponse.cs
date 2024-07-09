@@ -1,6 +1,6 @@
-﻿namespace DotNetBoilerplate.Application.DTO;
+﻿namespace DotNetBoilerplate.Application.Users.Responses;
 
-public class UserDetailsDto
+public class UserDetailsResponse
 {
     public Guid Id { get; set; }
     public string Username { get; set; }

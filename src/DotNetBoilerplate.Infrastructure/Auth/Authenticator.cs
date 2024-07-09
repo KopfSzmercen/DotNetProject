@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using DotNetBoilerplate.Application.DTO;
 using DotNetBoilerplate.Application.Security;
+using DotNetBoilerplate.Application.Security.Responses;
 using DotNetBoilerplate.Shared.Abstractions.Time;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -30,7 +30,7 @@ public class Authenticator : IAuthenticator
                 SecurityAlgorithms.HmacSha256);
     }
 
-    public JwtDto CreateToken(Guid userId, string role)
+    public JwtResponse CreateToken(Guid userId, string role)
     {
         var now = _clock.Now();
         var expires = now.Add(_expiry);
@@ -46,7 +46,7 @@ public class Authenticator : IAuthenticator
 
         var accessToken = _jwtSecurityTokenHandler.WriteToken(jwt);
 
-        return new JwtDto
+        return new JwtResponse
         {
             AccessToken = accessToken
         };

@@ -2,4 +2,4 @@
 
 namespace DotNetBoilerplate.Application.Organizations.Create;
 
-public sealed record CreateOrganizationCommand(string Name) : ICommand;
+public sealed record CreateOrganizationCommand(string Name) : ICommand<Guid>;

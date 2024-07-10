@@ -33,4 +33,26 @@ internal sealed class PostgresUnitOfWork : IUnitOfWork
             throw;
         }
     }
+
+    public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> action)
+    {
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
+        try
+        {
+            var result = await action();
+
+            await _domainEventsDispatcher.DispatchEventsAsync();
+
+            await _dbContext.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return result;
+        }
+        catch (Exception)
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
 }

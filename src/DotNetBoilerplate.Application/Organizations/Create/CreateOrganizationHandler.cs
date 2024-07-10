@@ -9,9 +9,9 @@ internal sealed class CreateOrganizationHandler(
     IOrganizationsRepository organizationsRepository,
     IContext context,
     IClock clock
-) : ICommandHandler<CreateOrganizationCommand>
+) : ICommandHandler<CreateOrganizationCommand, Guid>
 {
-    public async Task HandleAsync(CreateOrganizationCommand command)
+    public async Task<Guid> HandleAsync(CreateOrganizationCommand command)
     {
         var isNameUnique =
             await organizationsRepository.IsOrganizationNameUniqueAsync(command.Name);
@@ -24,5 +24,7 @@ internal sealed class CreateOrganizationHandler(
         );
 
         await organizationsRepository.AddAsync(organization);
+
+        return organization.Id;
     }
 }

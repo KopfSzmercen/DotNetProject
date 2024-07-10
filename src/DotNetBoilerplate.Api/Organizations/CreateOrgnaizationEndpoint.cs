@@ -25,9 +25,9 @@ internal sealed class CreateOrganizationEndpoint : IEndpoint
     {
         var command = new CreateOrganizationCommand(request.Name);
 
-        await commandDispatcher.DispatchAsync(command, ct);
+        var result = await commandDispatcher.DispatchAsync<CreateOrganizationCommand, Guid>(command, ct);
 
-        return TypedResults.Ok(new Response(Guid.NewGuid()));
+        return TypedResults.Ok(new Response(result));
     }
 
     internal sealed record Response(

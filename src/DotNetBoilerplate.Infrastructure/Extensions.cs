@@ -1,5 +1,6 @@
 ﻿using DotNetBoilerplate.Infrastructure.Auth;
 using DotNetBoilerplate.Infrastructure.BackgroundJobs;
+using DotNetBoilerplate.Infrastructure.Cors;
 using DotNetBoilerplate.Infrastructure.DAL;
 using DotNetBoilerplate.Infrastructure.Emails;
 using DotNetBoilerplate.Infrastructure.Events;
@@ -31,6 +32,8 @@ public static class Extensions
             .AddAuth(configuration)
             .AddEmails(configuration);
 
+        services.AddCors(configuration);
+
         return services;
     }
 
@@ -39,6 +42,8 @@ public static class Extensions
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+
+        app.UseCors();
 
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseAuthentication();

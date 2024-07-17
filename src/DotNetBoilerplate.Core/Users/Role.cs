@@ -18,7 +18,7 @@ public record Role
         Value = value;
     }
 
-    private static IEnumerable<string> AvailableRoles { get; } = new[] { "admin", "user" };
+    private static IEnumerable<string> AvailableRoles { get; } = new[] { "admin", "user", "moderator" };
 
     public string Value { get; }
 
@@ -30,6 +30,11 @@ public record Role
     public static Role User()
     {
         return new Role("user");
+    }
+
+    public static Role Moderator()
+    {
+        return new Role("moderator");
     }
 
     public static implicit operator Role(string value)
